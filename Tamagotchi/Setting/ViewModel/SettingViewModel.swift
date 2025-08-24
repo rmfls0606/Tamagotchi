@@ -14,15 +14,17 @@ final class SettingViewModel {
     private let disposeBag = DisposeBag()
     
     struct Input {
-        
+        let cellItemSelected:  ControlEvent<IndexPath>
     }
     
     struct Output {
         let settingCellData: BehaviorRelay<[Setting]>
+        let selectedInexPath: PublishRelay<Int>
     }
     
     func transform(input: Input) -> Output {
         let settingCellDataRelay = BehaviorRelay<[Setting]>(value: [])
+        let selectedInexPathRelay = PublishRelay<Int>()
         
         settingCellDataRelay.accept([
            Setting(imageName:  "pencil", title: "내 이름 설정하기", detail: UserManager.shared.currentUser?.nickName ?? "대장님"),
@@ -30,6 +32,15 @@ final class SettingViewModel {
            Setting(imageName:  "arrow.clockwise", title: "데이터 초기화", detail: nil),
         ])
         
-        return Output(settingCellData: settingCellDataRelay)
+        input.cellItemSelected
+            .map{ $0.row }
+            .bind(to: selectedInexPathRelay)
+            .disposed(by: disposeBag)
+            
+        
+        return Output(
+            settingCellData: settingCellDataRelay,
+            selectedInexPath: selectedInexPathRelay
+        )
     }
 }
