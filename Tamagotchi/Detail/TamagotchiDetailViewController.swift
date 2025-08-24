@@ -10,6 +10,9 @@ import SnapKit
 
 final class TamagotchiDetailViewController: BaseViewController {
     
+    //MARK: - Property
+    var selectedTamagotchi: Tamagotchi?
+    
     //MARK: - View
     private let MainBoxView: UIView = {
         let view = UIView()
@@ -164,5 +167,11 @@ final class TamagotchiDetailViewController: BaseViewController {
     
     override func configureView() {
         view.backgroundColor = .darkGray.withAlphaComponent(0.8)
+        
+        if let tamagotchi = selectedTamagotchi {
+            tamagotchiImageView.image = UIImage(named: tamagotchi.imageName)
+            tamagotchiNameLabel.text = tamagotchi.name
+            introductionTextView.text = tamagotchi.introduction
+        }
     }
 }

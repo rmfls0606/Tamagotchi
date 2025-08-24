@@ -52,7 +52,9 @@ final class TamagotchiSelectViewController: BaseViewController {
     }
     
     override func configureBind() {
-        let input = TamagotchiSelectViewModel.Input()
+        let input = TamagotchiSelectViewModel.Input(
+            cellSelected: collectionView.rx.modelSelected(Tamagotchi.self)
+        )
         
         let output = viewModel.transform(input: input)
         
@@ -60,6 +62,16 @@ final class TamagotchiSelectViewController: BaseViewController {
             .bind(to: collectionView.rx.items(cellIdentifier: TamagotchiSelectCollectionViewCell.identifier, cellType: TamagotchiSelectCollectionViewCell.self)){ item, element, cell in
                 cell.tamagotchiImageView.image = UIImage(named: element.imageName)
                 cell.tamagotchiNameLabel.text = element.name
+            }
+            .disposed(by: disposeBag)
+        
+        output.selectedTamagotchi
+            .bind(with: self) { owner, value in
+                let vc = TamagotchiDetailViewController()
+                vc.selectedTamagotchi = value
+                vc.modalPresentationStyle = .overCurrentContext
+                owner.present(vc, animated: true)
+                
             }
             .disposed(by: disposeBag)
     }
