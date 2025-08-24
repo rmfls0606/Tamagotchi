@@ -7,6 +7,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 final class TamagotchiSelectViewModel {
     
@@ -15,10 +16,14 @@ final class TamagotchiSelectViewModel {
     }
     
     struct Output{
-        
+        var tamagotchis: BehaviorRelay<[Tamagotchi]>
     }
     
     func transform(input: Input) -> Output {
-        return Output()
+        let tamagotchis = BehaviorRelay<[Tamagotchi]>(value: [])
+        
+        tamagotchis.accept(TamagotchiData.tamagotchis)
+        
+        return Output(tamagotchis: tamagotchis)
     }
 }
