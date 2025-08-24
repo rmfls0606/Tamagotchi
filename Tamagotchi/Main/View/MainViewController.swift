@@ -235,7 +235,9 @@ final class MainViewController: BaseViewController {
     override func configureBind() {
         let input = MainViewModel.Input(
             riceEatButtonTapped: riceEatButton.rx.tap,
-            riceValue: riceTextField.rx.text.orEmpty)
+            riceValue: riceTextField.rx.text.orEmpty,
+            waterDrinkButtonTapped: waterDrinkButton.rx.tap,
+            waterCount: waterTextField.rx.text.orEmpty)
         
         let output = viewModel.transform(input: input)
         
