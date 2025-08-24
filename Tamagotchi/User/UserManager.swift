@@ -31,4 +31,10 @@ final class UserManager {
     func updateUser(newUser: User){
         user = newUser
     }
+    
+    func updateNickname(nickname: String){
+        guard var current = user else { return }
+        current.nickName = nickname
+        user = current
+    }
 }
