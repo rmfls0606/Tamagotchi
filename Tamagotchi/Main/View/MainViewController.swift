@@ -7,9 +7,16 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class MainViewController: BaseViewController {
     
+    //MARK: - Property
+    private let viewModel = MainViewModel()
+    private let disposeBag = DisposeBag()
+    
+    //MARK: - View
     private let tamagotchiStoryImageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "bubble")
@@ -223,5 +230,20 @@ final class MainViewController: BaseViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "\(UserManager.shared.currentUser?.name ?? "대장")님의 다마고치"
+    }
+    
+    override func configureBind() {
+        let input = MainViewModel.Input(
+            riceEatButtonTapped: riceEatButton.rx.tap,
+            riceValue: riceTextField.rx.text.orEmpty)
+        
+        let output = viewModel.transform(input: input)
+        
+        output.user
+            .bind(with: self) { owner, user in
+                owner.tamagotchiImageView.image = UIImage(named: user.imageName)
+                owner.tamagotchiInfoLabel.text = "Lv\(user.level)·밥알 \(user.riceCount)개·물방울 \(user.waterCount)개"
+            }
+            .disposed(by: disposeBag)
     }
 }
