@@ -13,7 +13,8 @@ enum UserDefaultKey: String{
 
 struct User: Codable{
     var imageName: String
-    var name: String = "대장"
+    var nickName: String = "대장"
+    var name: String
     var introduction: String
     var level: Int = 1
     var riceCount: Int = 0
