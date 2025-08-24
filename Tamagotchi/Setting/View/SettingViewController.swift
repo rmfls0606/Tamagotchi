@@ -72,6 +72,10 @@ final class SettingViewController: BaseViewController {
                 if row == 0{
                     let vc = SetNicknameViewController()
                     owner.navigationController?.pushViewController(vc, animated: true)
+                }else if row == 1{
+                    let vc = TamagotchiSelectViewController()
+                    vc.isEditMode = true
+                    owner.navigationController?.pushViewController(vc, animated: true)
                 }
             }
             .disposed(by: disposeBag)

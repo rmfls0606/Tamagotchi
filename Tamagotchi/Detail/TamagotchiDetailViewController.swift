@@ -13,6 +13,8 @@ import RxCocoa
 final class TamagotchiDetailViewController: BaseViewController {
     
     //MARK: - Property
+    var isEditMode: Bool = false
+    
     var selectedTamagotchi: Tamagotchi?
     private let disposeBag = DisposeBag()
     
@@ -93,7 +95,7 @@ final class TamagotchiDetailViewController: BaseViewController {
     private let startButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.plain()
-        config.attributedTitle = AttributedString("시작 ", attributes: AttributeContainer([
+        config.attributedTitle = AttributedString("시작", attributes: AttributeContainer([
             .font: UIFont.systemFont(ofSize: 14)
         ]))
         config.baseForegroundColor = .black
@@ -177,6 +179,12 @@ final class TamagotchiDetailViewController: BaseViewController {
             tamagotchiNameLabel.text = tamagotchi.name
             introductionTextView.text = tamagotchi.introduction
         }
+        
+        if isEditMode{
+            startButton.configuration?.attributedTitle = AttributedString("변경하기", attributes: AttributeContainer([
+                .font: UIFont.systemFont(ofSize: 14)
+            ]))
+        }
     }
     
     override func configureBind() {
@@ -191,12 +199,15 @@ final class TamagotchiDetailViewController: BaseViewController {
             .asDriver()
             .drive(with: self) { owner, _ in
                 UserManager.shared.createUser(imageName: owner.selectedTamagotchi?.imageName ?? "noImage", name: owner
-                    .selectedTamagotchi?.name ?? "준비중이에요", introduction: owner.selectedTamagotchi?.introduction ?? "준비중입니다.")
-                
-                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-                
-                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: MainViewController())
-                sceneDelegate.window?.makeKeyAndVisible()
+                    .selectedTamagotchi?.name ?? "준비중이에요", introduction: owner.selectedTamagotchi?.introduction ?? "준비중입니다.", isEdit: owner.isEditMode)
+                if owner.isEditMode{
+                    owner.dismiss(animated: true)
+                }else{
+                    guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+                    
+                    sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+                    sceneDelegate.window?.makeKeyAndVisible()
+                }
             }
             .disposed(by: disposeBag)
     }

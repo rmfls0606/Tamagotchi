@@ -13,6 +13,8 @@ import RxCocoa
 final class TamagotchiSelectViewController: BaseViewController {
     
     //MARK: - Property
+    var isEditMode: Bool = false
+    
     private let viewModel = TamagotchiSelectViewModel()
     private let disposeBag = DisposeBag()
     
@@ -69,6 +71,7 @@ final class TamagotchiSelectViewController: BaseViewController {
             .bind(with: self) { owner, value in
                 let vc = TamagotchiDetailViewController()
                 vc.selectedTamagotchi = value
+                vc.isEditMode = owner.isEditMode
                 vc.modalPresentationStyle = .overCurrentContext
                 owner.present(vc, animated: true)
                 
