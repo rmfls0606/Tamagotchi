@@ -15,12 +15,16 @@ final class UserManager {
     
     @UserDefault(key: .user) private var user: User?
     
+    var currentUser: User?{
+        return user
+    }
+    
     var isOnboarded: Bool{
         return user != nil
     }
     
-    func createUser(imageName: String, introduction: String){
-        let newUser = User(imageName: imageName, introduction: introduction)
+    func createUser(imageName: String, name: String, introduction: String){
+        let newUser = User(imageName: imageName, name: name, introduction: introduction)
         user = newUser
     }
 }
