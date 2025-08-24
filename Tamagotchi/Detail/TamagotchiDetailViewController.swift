@@ -186,5 +186,17 @@ final class TamagotchiDetailViewController: BaseViewController {
                 owner.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
+        
+        startButton.rx.tap
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                UserManager.shared.createUser(imageName: owner.selectedTamagotchi?.imageName ?? "noImage", introduction: owner.selectedTamagotchi?.introduction ?? "준비 중 입니다.")
+                
+                guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+                
+                sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+                sceneDelegate.window?.makeKeyAndVisible()
+            }
+            .disposed(by: disposeBag)
     }
 }
