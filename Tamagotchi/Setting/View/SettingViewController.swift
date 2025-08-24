@@ -40,7 +40,9 @@ final class SettingViewController: BaseViewController {
     }
     
     override func configureBind() {
-        let input = SettingViewModel.Input()
+        let input = SettingViewModel.Input(
+            cellItemSelected: tableView.rx.itemSelected
+        )
         
         let output = viewModel.transform(input: input)
         
@@ -62,6 +64,15 @@ final class SettingViewController: BaseViewController {
                 cell.selectionStyle = .none
                 
               return cell
+            }
+            .disposed(by: disposeBag)
+        
+        output.selectedInexPath
+            .bind(with: self) { owner, row in
+                if row == 0{
+                    let vc = SetNicknameViewController()
+                    owner.navigationController?.pushViewController(vc, animated: true)
+                }
             }
             .disposed(by: disposeBag)
     }
