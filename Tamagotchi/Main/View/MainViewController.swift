@@ -230,6 +230,10 @@ final class MainViewController: BaseViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "\(UserManager.shared.currentUser?.name ?? "대장")님의 다마고치"
+        
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"), style: .plain, target: self, action: nil)
+        rightBarButtonItem.tintColor = .systemGray
+        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
     override func configureBind() {
@@ -250,6 +254,13 @@ final class MainViewController: BaseViewController {
         
         output.story
             .bind(to: tamagotchiStoryLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        navigationItem.rightBarButtonItem?.rx.tap
+            .bind(with: self) { owner, _ in
+                let vc = SettingViewController()
+                owner.navigationController?.pushViewController(vc, animated: true)
+            }
             .disposed(by: disposeBag)
     }
 }
