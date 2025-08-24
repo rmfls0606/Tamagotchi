@@ -56,6 +56,7 @@ final class TamagotchiDetailViewController: BaseViewController {
         view.isScrollEnabled = false
         view.text = "준비중입니다."
         view.textAlignment = .center
+        view.font = .systemFont(ofSize: 14)
         return view
     }()
     
