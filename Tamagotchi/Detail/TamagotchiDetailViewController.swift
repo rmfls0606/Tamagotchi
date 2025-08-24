@@ -190,7 +190,8 @@ final class TamagotchiDetailViewController: BaseViewController {
         startButton.rx.tap
             .asDriver()
             .drive(with: self) { owner, _ in
-                UserManager.shared.createUser(imageName: owner.selectedTamagotchi?.imageName ?? "noImage", introduction: owner.selectedTamagotchi?.introduction ?? "준비 중 입니다.")
+                UserManager.shared.createUser(imageName: owner.selectedTamagotchi?.imageName ?? "noImage", name: owner
+                    .selectedTamagotchi?.name ?? "준비중이에요", introduction: owner.selectedTamagotchi?.introduction ?? "준비중입니다.")
                 
                 guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
                 
