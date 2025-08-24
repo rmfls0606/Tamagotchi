@@ -27,4 +27,8 @@ final class UserManager {
         let newUser = User(imageName: imageName, name: name, introduction: introduction)
         user = newUser
     }
+    
+    func updateUser(newUser: User){
+        user = newUser
+    }
 }
