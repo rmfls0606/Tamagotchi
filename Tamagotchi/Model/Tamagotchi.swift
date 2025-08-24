@@ -36,4 +36,22 @@ struct TamagotchiData{
         Tamagotchi(imageName: "noImage", name: "준비중이에요", introduction: "준비중입니다."),
         Tamagotchi(imageName: "noImage", name: "준비중이에요", introduction: "준비중입니다.")
     ]
+    
+    static let tamagotchiStory: [String] = ["배고파요.. 밥 주세요!", "밥 먹을 시간이에요!", "목이 너무 말라요.. 물 주세요!", "물 한잔만 주세요!", "오늘 깃허브 푸시 하셨어요?", "블로그 작성하셨어요?", "공부는 하고 계신가요?", "오늘 하루 코딩 열심히 해봐요!"]
+    
+    static let eatStory: [String] = [
+        "우와! 밥 너무 맛있었어요~ 배불러요",
+        "든든하게 먹었더니 힘이 불끈 나요!",
+        "밥 잘 먹고 기분 최고예요!",
+        "든든한 한 끼 감사합니다~ 잘 클 수 있을 것 같아요!",
+        "밥 먹으니 행복지수 +100↑"
+    ]
+    
+    static let drinkStory: [String] = [
+        "꿀꺽꿀꺽~ 시원해요!",
+        "목이 촉촉해졌어요",
+        "물이 제일 맛있는 간식이에요~",
+        "시원한 물 덕분에 더 튼튼해질 거예요!",
+        "감사합니다! 생기가 돌아왔어요"
+    ]
 }
