@@ -247,5 +247,9 @@ final class MainViewController: BaseViewController {
                 owner.tamagotchiInfoLabel.text = "Lv\(user.level)·밥알 \(user.riceCount)개·물방울 \(user.waterCount)개"
             }
             .disposed(by: disposeBag)
+        
+        output.story
+            .bind(to: tamagotchiStoryLabel.rx.text)
+            .disposed(by: disposeBag)
     }
 }
