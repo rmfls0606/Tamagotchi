@@ -45,4 +45,8 @@ final class UserManager {
         current.nickName = nickname
         user = current
     }
+    
+    func resetUser(){
+        user = nil
+    }
 }
