@@ -16,6 +16,8 @@ final class MainViewModel {
     struct Input{
         let riceEatButtonTapped: ControlEvent<Void>
         let riceValue: ControlProperty<String>
+        let waterDrinkButtonTapped: ControlEvent<Void>
+        let waterCount: ControlProperty<String>
     }
     
     struct Output{
@@ -44,6 +46,32 @@ final class MainViewModel {
                     var newUser = currntUser
                     newUser.imageName = "\(currntUser.imageName.prefix(1))-\(imageNumber)"
                     newUser.riceCount = newRiceCount
+                    newUser.level = level
+                    UserManager.shared.updateUser(newUser: newUser)
+                    userRelay.accept(newUser)
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        input.waterDrinkButtonTapped
+            .withLatestFrom(input.waterCount)
+            .map { value in
+                guard let value = Int(value), !String(value).isEmpty else { return 1}
+                
+                if value >= 1 && value <= 49{
+                    return value
+                }
+                return 0
+            }
+            .bind(with: self) { owner, value in
+                if let currntUser = UserManager.shared.currentUser{
+                    let newWaterCount = currntUser.waterCount + value
+                    let level = owner.calculateLevel(rice: currntUser.riceCount, water: newWaterCount)
+                    let imageNumber = min(level, 9)
+                    
+                    var newUser = currntUser
+                    newUser.imageName = "\(currntUser.imageName.prefix(1))-\(imageNumber)"
+                    newUser.waterCount = newWaterCount
                     newUser.level = level
                     UserManager.shared.updateUser(newUser: newUser)
                     userRelay.accept(newUser)
