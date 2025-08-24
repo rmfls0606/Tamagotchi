@@ -27,11 +27,11 @@ final class TamagotchiSelectViewController: BaseViewController {
         
         let dimension = ((width - (padding * 2)) - (spacing * (cellCount - 1))) / cellCount
         
-        layout.estimatedItemSize = CGSize(width: dimension, height: dimension)
+        layout.itemSize = CGSize(width: dimension, height: dimension * 1.4)
         layout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        
+        layout.minimumLineSpacing = spacing
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.identifier)
+        view.register(TamagotchiSelectCollectionViewCell.self, forCellWithReuseIdentifier: TamagotchiSelectCollectionViewCell.identifier)
         return view
     }()
     
@@ -57,8 +57,9 @@ final class TamagotchiSelectViewController: BaseViewController {
         let output = viewModel.transform(input: input)
         
         output.tamagotchis
-            .bind(to: collectionView.rx.items(cellIdentifier: UICollectionViewCell.identifier, cellType: UICollectionViewCell.self)){ item, element, cell in
-                cell.backgroundColor = .gray
+            .bind(to: collectionView.rx.items(cellIdentifier: TamagotchiSelectCollectionViewCell.identifier, cellType: TamagotchiSelectCollectionViewCell.self)){ item, element, cell in
+                cell.tamagotchiImageView.image = UIImage(named: element.imageName)
+                cell.tamagotchiNameLabel.text = element.name
             }
             .disposed(by: disposeBag)
     }
