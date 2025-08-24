@@ -7,11 +7,14 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class TamagotchiDetailViewController: BaseViewController {
     
     //MARK: - Property
     var selectedTamagotchi: Tamagotchi?
+    private let disposeBag = DisposeBag()
     
     //MARK: - View
     private let MainBoxView: UIView = {
@@ -174,5 +177,14 @@ final class TamagotchiDetailViewController: BaseViewController {
             tamagotchiNameLabel.text = tamagotchi.name
             introductionTextView.text = tamagotchi.introduction
         }
+    }
+    
+    override func configureBind() {
+        cancelButton.rx.tap
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 }
