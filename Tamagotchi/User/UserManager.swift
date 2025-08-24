@@ -23,9 +23,17 @@ final class UserManager {
         return user != nil
     }
     
-    func createUser(imageName: String, name: String, introduction: String){
-        let newUser = User(imageName: imageName, name: name, introduction: introduction)
-        user = newUser
+    func createUser(imageName: String, name: String, introduction: String, isEdit: Bool){
+        if isEdit{
+            guard var current = user else { return }
+            current.imageName = imageName
+            current.name = name
+            current.introduction = introduction
+            user = current
+        }else{
+            let newUser = User(imageName: imageName, name: name, introduction: introduction)
+            user = newUser
+        }
     }
     
     func updateUser(newUser: User){
