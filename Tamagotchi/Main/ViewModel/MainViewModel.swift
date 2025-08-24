@@ -22,10 +22,12 @@ final class MainViewModel {
     
     struct Output{
         let user: PublishRelay<User>
+        let story: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
         let userRelay = PublishRelay<User>()
+        let storyRelay = PublishRelay<String>()
         
         input.riceEatButtonTapped
             .withLatestFrom(input.riceValue)
@@ -38,7 +40,7 @@ final class MainViewModel {
                 return 0
             }
             .bind(with: self) { owner, value in
-                if let currntUser = UserManager.shared.currentUser{
+                if let currntUser = UserManager.shared.currentUser, value != 0{
                     let newRiceCount = currntUser.riceCount + value
                     let level = owner.calculateLevel(rice: newRiceCount, water: currntUser.waterCount)
                     let imageNumber = min(level, 9)
@@ -49,6 +51,7 @@ final class MainViewModel {
                     newUser.level = level
                     UserManager.shared.updateUser(newUser: newUser)
                     userRelay.accept(newUser)
+                    storyRelay.accept(TamagotchiData.eatStory.randomElement() ?? "감사해요~!")
                 }
             }
             .disposed(by: disposeBag)
@@ -64,7 +67,7 @@ final class MainViewModel {
                 return 0
             }
             .bind(with: self) { owner, value in
-                if let currntUser = UserManager.shared.currentUser{
+                if let currntUser = UserManager.shared.currentUser, value != 0{
                     let newWaterCount = currntUser.waterCount + value
                     let level = owner.calculateLevel(rice: currntUser.riceCount, water: newWaterCount)
                     let imageNumber = min(level, 9)
@@ -75,11 +78,12 @@ final class MainViewModel {
                     newUser.level = level
                     UserManager.shared.updateUser(newUser: newUser)
                     userRelay.accept(newUser)
+                    storyRelay.accept(TamagotchiData.drinkStory.randomElement() ?? "감사해요~!")
                 }
             }
             .disposed(by: disposeBag)
         
-        return Output(user: userRelay)
+        return Output(user: userRelay, story: storyRelay)
     }
     
     private func calculateLevel(rice: Int, water: Int) -> Int {
