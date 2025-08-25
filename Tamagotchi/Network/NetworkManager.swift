@@ -12,7 +12,7 @@ final class NetworkManager{
     
     private init(){}
     
-    func callRequest<T: Decodable>(api: LottoRouter, type: T.Type, successHandler: @escaping (T) -> Void, failureHandler: @escaping (Error) -> Void){
+    func callRequest<T: Decodable>(api: RouterProtocol, type: T.Type, successHandler: @escaping (T) -> Void, failureHandler: @escaping (Error) -> Void){
         AF.request(api.endPoint, method: api.method, parameters: api.parameters)
             .validate(statusCode: 200..<300)
             .responseDecodable(of: type.self) { response in
