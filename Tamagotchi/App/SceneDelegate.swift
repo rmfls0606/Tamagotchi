@@ -19,15 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(windowScene: windowScene)
-        if UserManager.shared.isOnboarded {
-            let vc = MainViewController()
-            let nav = UINavigationController(rootViewController: vc)
-            window?.rootViewController = nav
-        }else{
-            let vc = TamagotchiSelectViewController()
-            let nav = UINavigationController(rootViewController: vc)
-            window?.rootViewController = nav
-        }
+        window?.rootViewController = TabBarViewController()
         window?.makeKeyAndVisible()
     }
     
