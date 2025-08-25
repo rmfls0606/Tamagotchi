@@ -12,6 +12,8 @@ import RxCocoa
 
 final class BoxOfficeViewController: BaseViewController {
     
+    private let disposeBag = DisposeBag()
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchTextField.backgroundColor = .systemGray6
@@ -23,8 +25,11 @@ final class BoxOfficeViewController: BaseViewController {
         let view = UITableView()
         view.rowHeight = 50
         view.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        view.separatorInset = .zero
         return view
     }()
+    
+private var boxOfficeList: BehaviorSubject<[DailyBoxOfficeList]> = BehaviorSubject(value: [])
     
     override func configureHierarchy() {
         view.addSubview(searchBar)
@@ -47,5 +52,29 @@ final class BoxOfficeViewController: BaseViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "Box Office"
+    }
+    
+    override func configureBind() {
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .flatMap({ value in
+                CustomObservable.getBoxOffice(targetDt: value)
+            })
+            .subscribe(with: self) { owner, result in
+                owner.boxOfficeList.onNext(result.boxOfficeResult.dailyBoxOfficeList)
+            } onError: { owner, error in
+                print("onError", error)
+            }
+            .disposed(by: disposeBag)
+        
+        boxOfficeList
+            .bind(to: tableView.rx.items){ tableView, row, element in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+                
+                cell.textLabel?.text = element.movieNm
+                return cell
+            }
+            .disposed(by: disposeBag)
     }
 }
