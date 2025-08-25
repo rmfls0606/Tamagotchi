@@ -150,6 +150,8 @@ final class MainViewController: BaseViewController {
         btn.configuration = config
         return btn
     }()
+    
+    private let tap = UITapGestureRecognizer()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -177,6 +179,8 @@ final class MainViewController: BaseViewController {
         waterStackView.addArrangedSubview(waterTextField)
         waterStackView.addArrangedSubview(waterDrinkButton)
         view.addSubview(waterStackView)
+        
+        view.addGestureRecognizer(tap)
     }
     
     override func configureLayout() {
@@ -265,6 +269,12 @@ final class MainViewController: BaseViewController {
             .bind(with: self) { owner, _ in
                 let vc = SettingViewController()
                 owner.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        tap.rx.event
+            .bind(with: self) { owner, _ in
+                owner.view.endEditing(true)
             }
             .disposed(by: disposeBag)
     }
