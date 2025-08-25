@@ -155,6 +155,7 @@ final class MainViewController: BaseViewController {
         super.viewWillAppear(animated)
         
         tamagotchiStoryLabel.text = TamagotchiData.tamagotchiStory.randomElement()
+        navigationItem.title = "\(UserManager.shared.currentUser?.nickName ?? "대장")님의 다마고치"
     }
     
     override func configureHierarchy() {
@@ -233,8 +234,6 @@ final class MainViewController: BaseViewController {
     
     override func configureView() {
         view.backgroundColor = .white
-        
-        navigationItem.title = "\(UserManager.shared.currentUser?.nickName ?? "대장")님의 다마고치"
         
         let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "person.crop.circle"), style: .plain, target: self, action: nil)
         rightBarButtonItem.tintColor = .systemGray
