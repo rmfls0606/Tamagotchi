@@ -7,9 +7,15 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class LottoViewController: BaseViewController {
     
+    //MARK: - Property
+    private let disposeBag = DisposeBag()
+    
+    //MARK: - View
     private let textField: UITextField = {
         let view = UITextField()
         view.borderStyle = .roundedRect
@@ -46,5 +52,21 @@ final class LottoViewController: BaseViewController {
         view.backgroundColor = .white
         
         navigationItem.title = "Lotto"
+    }
+    
+    override func configureBind() {
+        textField.rx.controlEvent(.editingDidEndOnExit)
+            .withLatestFrom(textField.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .flatMap { value in
+                CustomObservable.getLotto(draNo: value)
+            }
+            .subscribe(with: self) { owner, lotto in
+                let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
+                owner.resultLabel.text = result
+            } onError: { owner, error in
+                print("onError", error)
+            }
+            .disposed(by: disposeBag)
     }
 }
