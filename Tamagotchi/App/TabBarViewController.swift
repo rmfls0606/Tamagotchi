@@ -14,6 +14,12 @@ final class TabBarViewController: UITabBarController {
         
         view.backgroundColor = .white
         configure()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changeTabView), name: .tamagotchiTabViewChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func configure() {
@@ -28,5 +34,17 @@ final class TabBarViewController: UITabBarController {
         tabBar.tintColor = .green
         tabBar.unselectedItemTintColor = .systemGray2
         tabBar.backgroundColor = .systemGray6
+    }
+    
+    @objc
+    private func changeTabView(){
+        guard let viewControllers = viewControllers else { return }
+        
+        if let nav = viewControllers.first as? UINavigationController{
+            let newRootViewController = UserManager.shared.isOnboarded ? MainViewController() : TamagotchiSelectViewController()
+            nav.setViewControllers([newRootViewController], animated: false)
+            selectedIndex = 0
+            return
+        }
     }
 }
