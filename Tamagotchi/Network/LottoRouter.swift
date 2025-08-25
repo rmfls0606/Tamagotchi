@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-enum LottoRouter {
+enum LottoRouter: RouterProtocol {
     case main(drwNo: String)
     
     var endPoint: URL {
