@@ -203,10 +203,8 @@ final class TamagotchiDetailViewController: BaseViewController {
                 if owner.isEditMode{
                     owner.dismiss(animated: true)
                 }else{
-                    guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-                    
-                    sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: MainViewController())
-                    sceneDelegate.window?.makeKeyAndVisible()
+                    owner.dismiss(animated: true)
+                    NotificationCenter.default.post(name: .tamagotchiTabViewChange, object: nil)
                 }
             }
             .disposed(by: disposeBag)

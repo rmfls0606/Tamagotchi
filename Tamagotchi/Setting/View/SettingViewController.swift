@@ -83,10 +83,7 @@ final class SettingViewController: BaseViewController {
                     owner.showAlert(title: "데이터 초기화", message: "정말 다시 처음부터 시작하실 건가용?") {
                         UserManager.shared.resetUser()
                         
-                        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-                        
-                        sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: TamagotchiSelectViewController())
-                        sceneDelegate.window?.makeKeyAndVisible()
+                        NotificationCenter.default.post(name: .tamagotchiTabViewChange, object: nil)
                     }
                 }
             }
