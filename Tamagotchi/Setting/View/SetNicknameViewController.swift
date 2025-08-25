@@ -16,6 +16,8 @@ final class SetNicknameViewController: BaseViewController {
     private let viewModel = SetNicknameViewModel()
     private let disposeBag = DisposeBag()
     
+    var didSavedNickname: ((String) -> Void)?
+    
     //MARK: - View
     private let nicknameTextField: UITextField = {
         let textField = UITextField()
@@ -99,7 +101,9 @@ final class SetNicknameViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.saveNickname
-            .bind(with: self) { owner, _ in
+            .withLatestFrom(nicknameTextField.rx.text.orEmpty)
+            .bind(with: self) { owner, newNickname in
+                owner.didSavedNickname?(newNickname)
                 owner.navigationController?.popViewController(animated: true)
             }
             .disposed(by: disposeBag)

@@ -71,6 +71,9 @@ final class SettingViewController: BaseViewController {
             .bind(with: self) { owner, row in
                 if row == 0{
                     let vc = SetNicknameViewController()
+                    vc.didSavedNickname = { [weak owner] nickname in
+                        owner?.viewModel.updateNickname(nickname: nickname)
+                    }
                     owner.navigationController?.pushViewController(vc, animated: true)
                 }else if row == 1{
                     let vc = TamagotchiSelectViewController()
@@ -90,3 +93,4 @@ final class SettingViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
 }
+
