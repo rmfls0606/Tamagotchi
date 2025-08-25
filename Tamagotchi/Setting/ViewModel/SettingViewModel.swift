@@ -12,6 +12,7 @@ import RxCocoa
 final class SettingViewModel {
     
     private let disposeBag = DisposeBag()
+    private let itemRelay = BehaviorRelay<[Setting]>(value: [])
     
     struct Input {
         let cellItemSelected:  ControlEvent<IndexPath>
@@ -22,15 +23,12 @@ final class SettingViewModel {
         let selectedInexPath: PublishRelay<Int>
     }
     
+    init(){
+        reloadItems()
+    }
+    
     func transform(input: Input) -> Output {
-        let settingCellDataRelay = BehaviorRelay<[Setting]>(value: [])
         let selectedInexPathRelay = PublishRelay<Int>()
-        
-        settingCellDataRelay.accept([
-           Setting(imageName:  "pencil", title: "내 이름 설정하기", detail: UserManager.shared.currentUser?.nickName ?? "대장님"),
-           Setting(imageName:  "moon.fill", title: "다마고치 변경하기", detail: nil),
-           Setting(imageName:  "arrow.clockwise", title: "데이터 초기화", detail: nil),
-        ])
         
         input.cellItemSelected
             .map{ $0.row }
@@ -39,8 +37,23 @@ final class SettingViewModel {
             
         
         return Output(
-            settingCellData: settingCellDataRelay,
+            settingCellData: itemRelay,
             selectedInexPath: selectedInexPathRelay
         )
+    }
+    
+    private func reloadItems(){
+        let nickname = UserManager.shared.currentUser?.nickName ?? "대장님"
+        itemRelay.accept([
+            Setting(imageName:  "pencil", title: "내 이름 설정하기", detail: nickname),
+            Setting(imageName:  "moon.fill", title: "다마고치 변경하기", detail: nil),
+            Setting(imageName:  "arrow.clockwise", title: "데이터 초기화", detail: nil),
+        ])
+    }
+    
+    func updateNickname(nickname: String){
+        var items = itemRelay.value
+        items[0] = Setting(imageName: "pencil", title: "내 이름 설정하기", detail: nickname)
+        itemRelay.accept(items)
     }
 }
