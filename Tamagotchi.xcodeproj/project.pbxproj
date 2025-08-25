@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		797A67B02E5C97D800EA2633 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 797A67AF2E5C97D800EA2633 /* Alamofire */; };
 		79E085FE2E5AFB6C00334503 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 79E085FD2E5AFB6C00334503 /* .gitignore */; };
 		79E086CA2E5B00A800334503 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79E086C92E5B00A800334503 /* SnapKit */; };
 		79E086CD2E5B00B600334503 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79E086CC2E5B00B600334503 /* RxCocoa */; };
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				79E086CF2E5B00B600334503 /* RxSwift in Frameworks */,
+				797A67B02E5C97D800EA2633 /* Alamofire in Frameworks */,
 				79E086CD2E5B00B600334503 /* RxCocoa in Frameworks */,
 				79E086CA2E5B00A800334503 /* SnapKit in Frameworks */,
 			);
@@ -93,6 +95,7 @@
 				79E086C92E5B00A800334503 /* SnapKit */,
 				79E086CC2E5B00B600334503 /* RxCocoa */,
 				79E086CE2E5B00B600334503 /* RxSwift */,
+				797A67AF2E5C97D800EA2633 /* Alamofire */,
 			);
 			productName = Tamagotchi;
 			productReference = 79E085E52E5AFAB600334503 /* Tamagotchi.app */;
@@ -125,6 +128,7 @@
 			packageReferences = (
 				79E086C82E5B00A800334503 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				79E086CB2E5B00B600334503 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				797A67AE2E5C97D800EA2633 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 79E085E62E5AFAB600334503 /* Products */;
@@ -363,6 +367,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		797A67AE2E5C97D800EA2633 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 		79E086C82E5B00A800334503 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -382,6 +394,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		797A67AF2E5C97D800EA2633 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 797A67AE2E5C97D800EA2633 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		79E086C92E5B00A800334503 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 79E086C82E5B00A800334503 /* XCRemoteSwiftPackageReference "SnapKit" */;
