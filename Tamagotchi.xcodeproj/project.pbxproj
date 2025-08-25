@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		797A67B02E5C97D800EA2633 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 797A67AF2E5C97D800EA2633 /* Alamofire */; };
+		797A6ACB2E5CBFD900EA2633 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 797A6ACA2E5CBFD900EA2633 /* Config.xcconfig */; };
 		79E085FE2E5AFB6C00334503 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 79E085FD2E5AFB6C00334503 /* .gitignore */; };
 		79E086CA2E5B00A800334503 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79E086C92E5B00A800334503 /* SnapKit */; };
 		79E086CD2E5B00B600334503 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79E086CC2E5B00B600334503 /* RxCocoa */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		797A6ACA2E5CBFD900EA2633 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		79E085E52E5AFAB600334503 /* Tamagotchi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tamagotchi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79E085FD2E5AFB6C00334503 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +60,7 @@
 		79E085DC2E5AFAB600334503 = {
 			isa = PBXGroup;
 			children = (
+				797A6ACA2E5CBFD900EA2633 /* Config.xcconfig */,
 				79E085FD2E5AFB6C00334503 /* .gitignore */,
 				79E085E72E5AFAB600334503 /* Tamagotchi */,
 				79E085E62E5AFAB600334503 /* Products */,
@@ -145,6 +148,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				797A6ACB2E5CBFD900EA2633 /* Config.xcconfig in Resources */,
 				79E085FE2E5AFB6C00334503 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -164,6 +168,7 @@
 /* Begin XCBuildConfiguration section */
 		79E085F92E5AFAB700334503 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 797A6ACA2E5CBFD900EA2633 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -226,6 +231,7 @@
 		};
 		79E085FB2E5AFAB700334503 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 797A6ACA2E5CBFD900EA2633 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
