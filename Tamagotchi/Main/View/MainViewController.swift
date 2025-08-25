@@ -156,6 +156,7 @@ final class MainViewController: BaseViewController {
         
         tamagotchiStoryLabel.text = TamagotchiData.tamagotchiStory.randomElement()
         navigationItem.title = "\(UserManager.shared.currentUser?.nickName ?? "대장")님의 다마고치"
+        tamagotchiImageView.image = UIImage(named: UserManager.shared.currentUser?.imageName ?? "noImage")
     }
     
     override func configureHierarchy() {
