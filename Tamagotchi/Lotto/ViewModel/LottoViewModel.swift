@@ -20,33 +20,41 @@ final class LottoViewModel: BaseViewModel{
     
     struct Output{
         let lottoResponse: BehaviorRelay<String>
+        let showAlert: PublishRelay<Bool>
+        let alertMessage: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
         let lottoResponse = BehaviorRelay(value: "")
+        let showAlert = PublishRelay<Bool>()
+        let alertMessage = PublishRelay<String>()
         
         input.textFieldTap
             .withLatestFrom(input.textFieldText)
+            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .flatMap { value in
                 CustomObservable.getLotto(draNo: value)
             }
-            .catchAndReturn(Lotto(
-                drwtNo1: 0,
-                drwtNo2: 0,
-                drwtNo3: 0,
-                drwtNo4: 0,
-                drwtNo5: 0,
-                drwtNo6: 0
-            ))
-            .subscribe(with: self) { owner, lotto in
-                let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
-                lottoResponse.accept(result)
+            .subscribe(with: self) { owner, result in
+                switch result{
+                case .success(let lotto):
+                    let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
+                    lottoResponse.accept(result)
+                case .failure(let error):
+                    alertMessage.accept(error.errorDescription ?? "알 수 없는 오류가 발생하였습니다.")
+                    showAlert.accept(true)
+                }
+                
             } onError: { owner, error in
                 print("onError", error)
             }
             .disposed(by: disposeBag)
         
-        return Output(lottoResponse: lottoResponse)
+        return Output(
+            lottoResponse: lottoResponse,
+            showAlert: showAlert,
+            alertMessage: alertMessage
+        )
     }
 }
