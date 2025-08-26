@@ -13,6 +13,7 @@ import RxCocoa
 final class LottoViewController: BaseViewController {
     
     //MARK: - Property
+    private let viewModel = LottoViewModel()
     private let disposeBag = DisposeBag()
     
     //MARK: - View
@@ -26,7 +27,6 @@ final class LottoViewController: BaseViewController {
     
     private let resultLabel: UILabel = {
         let label = UILabel()
-        label.text = "결과가 없습니다."
         label.textAlignment = .center
         return label
     }()
@@ -55,18 +55,15 @@ final class LottoViewController: BaseViewController {
     }
     
     override func configureBind() {
-        textField.rx.controlEvent(.editingDidEndOnExit)
-            .withLatestFrom(textField.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap { value in
-                CustomObservable.getLotto(draNo: value)
-            }
-            .subscribe(with: self) { owner, lotto in
-                let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
-                owner.resultLabel.text = result
-            } onError: { owner, error in
-                print("onError", error)
-            }
+        let input = LottoViewModel.Input(
+            textFieldTap: textField.rx.controlEvent(.editingDidEndOnExit),
+            textFieldText: textField.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.lottoResponse
+            .bind(to: resultLabel.rx.text)
             .disposed(by: disposeBag)
     }
 }
