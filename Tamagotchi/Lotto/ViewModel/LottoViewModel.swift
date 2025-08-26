@@ -22,12 +22,16 @@ final class LottoViewModel: BaseViewModel{
         let lottoResponse: BehaviorRelay<String>
         let showAlert: PublishRelay<Bool>
         let alertMessage: PublishRelay<String>
+        let showToast: PublishRelay<Bool>
+        let toastMessage: PublishRelay<String>
     }
     
     func transform(input: Input) -> Output {
         let lottoResponse = BehaviorRelay(value: "")
         let showAlert = PublishRelay<Bool>()
         let alertMessage = PublishRelay<String>()
+        let showToast = PublishRelay<Bool>()
+        let toastMessage = PublishRelay<String>()
         
         input.textFieldTap
             .withLatestFrom(input.textFieldText)
@@ -42,8 +46,13 @@ final class LottoViewModel: BaseViewModel{
                     let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
                     lottoResponse.accept(result)
                 case .failure(let error):
-                    alertMessage.accept(error.errorDescription ?? "알 수 없는 오류가 발생하였습니다.")
-                    showAlert.accept(true)
+                    if error == .networkNotConnected{
+                        alertMessage.accept(error.errorDescription ?? "알 수 없는 오류가 발생하였습니다.")
+                        showAlert.accept(true)
+                    }else{
+                        toastMessage.accept(error.errorDescription ?? "알 수 없는 오류가 발생하였습니다.")
+                        showToast.accept(true)
+                    }
                 }
                 
             } onError: { owner, error in
@@ -54,7 +63,9 @@ final class LottoViewModel: BaseViewModel{
         return Output(
             lottoResponse: lottoResponse,
             showAlert: showAlert,
-            alertMessage: alertMessage
+            alertMessage: alertMessage,
+            showToast: showToast,
+            toastMessage: toastMessage
         )
     }
 }
