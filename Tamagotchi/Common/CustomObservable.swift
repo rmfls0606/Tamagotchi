@@ -11,15 +11,16 @@ import RxCocoa
 
 final class CustomObservable{
     
-    static func getLotto(draNo: String) -> Observable<Lotto>{
+    static func getLotto(draNo: String) -> Observable<Result<Lotto,NetworkError>>{
         
-        return Observable<Lotto>.create { observer in
+        return Observable<Result<Lotto,NetworkError>>.create { observer in
             
             NetworkManager.shared.callRequest(api: LottoRouter.main(drwNo: draNo), type: Lotto.self) { response in
-                observer.onNext(response)
+                observer.onNext(.success(response))
                 observer.onCompleted()
             } failureHandler: { error in
-                observer.onError(error)
+                observer.onNext(.failure(error))
+                observer.onCompleted()
             }
 
             return Disposables.create()
