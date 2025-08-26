@@ -27,15 +27,16 @@ final class CustomObservable{
         }
     }
     
-    static func getBoxOffice(targetDt: String) -> Observable<BoxOffice>{
+    static func getBoxOffice(targetDt: String) -> Observable<Result<BoxOffice,NetworkError>>{
         
-        return Observable<BoxOffice>.create { observer in
+        return Observable<Result<BoxOffice,NetworkError>>.create { observer in
             
             NetworkManager.shared.callRequest(api: BoxOfficeRouter.main(targetDt: targetDt), type: BoxOffice.self) { response in
-                observer.onNext(response)
+                observer.onNext(.success(response))
                 observer.onCompleted()
             } failureHandler: { error in
-                observer.onError(error)
+                observer.onNext(.failure(error))
+                observer.onCompleted()
             }
 
             return Disposables.create()
