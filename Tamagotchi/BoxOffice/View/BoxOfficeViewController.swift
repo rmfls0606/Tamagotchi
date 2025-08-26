@@ -9,11 +9,15 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
 final class BoxOfficeViewController: BaseViewController {
     
+    //MARK: - Property
     private let disposeBag = DisposeBag()
+    private let viewModel = BoxOfficeViewModel()
     
+    //MARK: - View
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchTextField.backgroundColor = .systemGray6
@@ -29,7 +33,7 @@ final class BoxOfficeViewController: BaseViewController {
         return view
     }()
     
-private var boxOfficeList: BehaviorSubject<[DailyBoxOfficeList]> = BehaviorSubject(value: [])
+    private var boxOfficeList: BehaviorSubject<[DailyBoxOfficeList]> = BehaviorSubject(value: [])
     
     override func configureHierarchy() {
         view.addSubview(searchBar)
@@ -47,7 +51,7 @@ private var boxOfficeList: BehaviorSubject<[DailyBoxOfficeList]> = BehaviorSubje
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
-
+    
     override func configureView() {
         view.backgroundColor = .white
         
@@ -55,25 +59,37 @@ private var boxOfficeList: BehaviorSubject<[DailyBoxOfficeList]> = BehaviorSubje
     }
     
     override func configureBind() {
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .flatMap({ value in
-                CustomObservable.getBoxOffice(targetDt: value)
-            })
-            .subscribe(with: self) { owner, result in
-                owner.boxOfficeList.onNext(result.boxOfficeResult.dailyBoxOfficeList)
-            } onError: { owner, error in
-                print("onError", error)
-            }
-            .disposed(by: disposeBag)
         
-        boxOfficeList
+        let input = BoxOfficeViewModel.Input(
+            searchTap: searchBar.rx.searchButtonClicked,
+            searchText: searchBar.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.boxOfficeList
             .bind(to: tableView.rx.items){ tableView, row, element in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
                 
                 cell.textLabel?.text = element.movieNm
                 return cell
+            }
+            .disposed(by: disposeBag)
+        
+        output.showAlert
+            .withLatestFrom(output.alertMessage)
+            .bind(with: self) { owner, message in
+                owner.showAlert(title: "오류발생", message: message) {
+                    
+                }
+            }
+            .disposed(by: disposeBag)
+        
+        output.showToast
+            .withLatestFrom(output.toastMessage)
+            .bind(with: self) { owner, message in
+                owner.view
+                    .makeToast(message, duration: 2)
             }
             .disposed(by: disposeBag)
     }
