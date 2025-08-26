@@ -21,7 +21,7 @@ final class LottoViewController: BaseViewController {
         let view = UITextField()
         view.borderStyle = .roundedRect
         view.placeholder = "회차를 입력해주세요..."
-        view.keyboardType = .numberPad
+//        view.keyboardType = .numberPad
         return view
     }()
     
@@ -64,6 +64,15 @@ final class LottoViewController: BaseViewController {
         
         output.lottoResponse
             .bind(to: resultLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        output.showAlert
+            .withLatestFrom(output.alertMessage)
+            .bind(with: self) { owner, message in
+                owner.showAlert(title: "오류발생", message: message) {
+                    
+                }
+            }
             .disposed(by: disposeBag)
     }
 }
