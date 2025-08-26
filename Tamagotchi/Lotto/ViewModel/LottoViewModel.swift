@@ -31,17 +31,14 @@ final class LottoViewModel: BaseViewModel{
             .flatMap { value in
                 CustomObservable.getLotto(draNo: value)
             }
-            .catch(
-                { error in
-                    return Observable.just(Lotto(
-                        drwtNo1: 0,
-                        drwtNo2: 0,
-                        drwtNo3: 0,
-                        drwtNo4: 0,
-                        drwtNo5: 0,
-                        drwtNo6: 0
-                    ))
-                })
+            .catchAndReturn(Lotto(
+                drwtNo1: 0,
+                drwtNo2: 0,
+                drwtNo3: 0,
+                drwtNo4: 0,
+                drwtNo5: 0,
+                drwtNo6: 0
+            ))
             .subscribe(with: self) { owner, lotto in
                 let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
                 lottoResponse.accept(result)
