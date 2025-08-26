@@ -31,6 +31,7 @@ final class LottoViewModel: BaseViewModel{
             .flatMap { value in
                 CustomObservable.getLotto(draNo: value)
             }
+            .retry(3)
             .subscribe(with: self) { owner, lotto in
                 let result = "\(lotto.drwtNo1), \(lotto.drwtNo2), \(lotto.drwtNo3), \(lotto.drwtNo4), \(lotto.drwtNo5), \(lotto.drwtNo6)"
                 lottoResponse.accept(result)
