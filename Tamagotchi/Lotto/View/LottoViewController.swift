@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
 final class LottoViewController: BaseViewController {
     
@@ -72,6 +73,14 @@ final class LottoViewController: BaseViewController {
                 owner.showAlert(title: "오류발생", message: message) {
                     
                 }
+            }
+            .disposed(by: disposeBag)
+        
+        output.showToast
+            .withLatestFrom(output.toastMessage)
+            .bind(with: self) { owner, message in
+                owner.view
+                    .makeToast(message, duration: 2)
             }
             .disposed(by: disposeBag)
     }
